@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:fragment="header-css">
+        <!-- this is header-css -->
+        <link rel="stylesheet" type="text/css"
+              href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+        <link rel="stylesheet" th:href="@{/css/main.css}"
+              href="../../css/main.css" />
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <!-- this is header -->
+    <nav id="mainbar" class="navbar navbar-inverse">
+        <div class="container">
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" style="width:95%; float: left;">
+                    <li class="active"><a th:href="@{/home}">Meine Tasks</a></li>
+                    <li class="active"><a th:href="@{/newTask}">Neuer Task</a></li>
+                  </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>

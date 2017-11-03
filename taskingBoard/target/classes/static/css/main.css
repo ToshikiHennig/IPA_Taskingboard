@@ -1,0 +1,202 @@
+h1{
+	color:#000000;
+}
+
+h2{
+	color:#FF0000;
+}
+::-webkit-scrollbar
+{
+  width: 6px;  /* for vertical scrollbars */
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(208,208,208,1);
+}
+.app-layout{
+	display: grid; /* 1 */
+  grid-template-columns: 1fr 1fr; /* 2 */
+  grid-template-rows: 70vh; /* 3 */
+}
+.taskfield{
+	height: 92%;
+	overflow-y: auto;
+}
+.app-layout{
+	height: 70%;
+}
+.column{
+	background-color: white;
+	border-radius: 5px;
+	margin: 5px;
+	width: 90%;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.active{
+	border-left: 1px solid #d0d0d0;
+	border-right: 1px solid #d0d0d0;
+}
+.task{
+	border: 1px solid #d0d0d0;
+	height: 8%;
+	margin-top: 3px;
+	background-color: white;
+}
+.task-title{
+	font-size: 140%;
+	margin-left: 3px;
+	color: #3b73af;
+}
+.description{
+	margin-left: 3px;
+}
+.title{
+	border-bottom: 1px solid #d0d0d0;
+	height: 8%;
+	font-size: 150%;
+	text-align: center;
+}
+#mainbar{
+	background-color: #f9f9f9;
+	border-bottom: 1px solid #d5d5d5;
+}
+.navbar{
+	background-color: #f9f9f9;
+}
+.navbar-inverse .navbar-nav>.active>a{
+    color: black;
+    background-color: #f9f9f9;
+     align-items: center;
+    
+}
+.navbar-inverse .navbar-nav>.active>a:hover {
+	color: black;
+	background-color: #eee;
+}
+.navbar-inverse .navbar-nav>.active>a:focus {
+	color: black;
+	background-color: #eee;
+}
+
+.navbar-inverse .navbar-nav>.active>a:active {
+	color: black;
+	background-color: #eee;
+}
+.navbar-inverse{
+	background-color: white;
+	border-color: white;
+}
+#mainlogincontainer{
+	padding-top: 5%;
+}
+#bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+
+  min-width: 100%;
+  min-height: 100%;
+  filter: blur(13px);
+   margin: -5px -20px -20px -20px;
+}
+footer{
+    margin-top:60px;
+}
+ul{
+	display: inline-block;
+}
+li:focus{
+		color: black;
+	background-color: #eee;
+}
+
+li {
+	width: 17.4%;
+	display: table-cell;
+	background-color: white;
+	color: #fff;
+	margin: center;
+	text-align: center;
+}
+#user{
+	width: 6.5%;
+}
+ #bell{
+ 	width:6.5%;
+ }
+ 
+ #success-alert{
+  position:fixed; 
+    bottom: 0px; 
+    right: 0px; 
+    width: 30%;
+    z-index:9999; 
+ }
+
+#homebar{
+	     display: flex;
+    align-items: center;
+}
+body{
+	background-color: white;
+}
+.panel-info{
+	border-color: #286090;
+	max-width: 640px;
+	min-height:500px;
+	margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+}
+.panel-info>.panel-heading {
+	background-color: #286090;
+	border-color: #286090;
+}
+
+.panel-title{
+	background-color: #286090;
+	color: white;
+}
+textarea {
+    resize: none;
+}
+#formdiv{
+	 border-radius: 6px;
+  background-color:#ffffff;
+  position: relative;
+  z-index: 1;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+#newTaskForm{
+	background-color: white;
+	  border-radius: 6px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#formtask{
+  background-color:#ffffff;
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+
+}
+#sign{
+	width: 100%;
+}
+body{
+	background-color: #f7f7f7;
+}

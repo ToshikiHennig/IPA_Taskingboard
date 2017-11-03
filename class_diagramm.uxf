@@ -85,6 +85,7 @@ Task
 int id;
 String title;
 String description;
+boolean done;
 User assignee;
 User creator;
 --
