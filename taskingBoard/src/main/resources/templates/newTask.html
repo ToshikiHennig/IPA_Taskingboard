@@ -2,43 +2,48 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script th:src="@{/js/newTask.js}"></script>
+    <script th:src="@{/js/notify.js}"></script>
 <div th:replace="fragments/header :: header-css"/>
    <title>Tasking Board</title>
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
 
-<div class="container">
-	<h1>Neuer Task</h1>
-      <div class="starter-template">
-       <form id="newTaskForm">
-            <div id="formtask">
-               <fieldset>
-					<div th:if="${param.error}">
+<div id="newtaskcontainer" class="container">
+
+    <div class="starter-template">
+        <h1>Neuer Task</h1>
+    	<form id="newTaskForm">
+    		<div id="formtask">
+    				<div th:if="${param.error}">
                         <div class="alert alert-danger">
                             Oops, da ist was schief gelaufen!
                         </div>
                     </div>
-                    <div class="form-group">
+    			<fieldset>
+    			 <div class="form-group">
                         <input type="text" name="title" id="title" class="form-control input-lg"
                                placeholder="Titel" required="true" autofocus="true"/>
                     </div>
                     <div class="form-group">
-                       <select required="true" placeholder="Zugewiesene Person" class="form-control input-lg" id="assignee" name="assignee">
+                       <select required="true" placeholder="Zuweisung" class="form-control input-lg" id="assignee" name="assignee">
                        </select>
                     </div>
                     <div class="form-group">
                        <textarea class="form-control input-lg" id="description" name="description" rows="10" cols="70" placeholder="Beschreibung" required="true"></textarea>
                     </div>
 
-                    <div id="sign">
+                    <div>
                         <div class="">
                             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Speichern"/>
                         </div>
                     </div>
-                </fieldset>
-                  </div>
-            </form>
+    			</fieldset>
+    		</div>
+       	</form>
     </div>
 
 </div>

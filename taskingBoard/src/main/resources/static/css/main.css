@@ -45,7 +45,7 @@ h2{
 }
 .task{
 	border: 1px solid #d0d0d0;
-	height: 8%;
+	height: 12%;
 	margin-top: 3px;
 	background-color: white;
 }
@@ -96,16 +96,7 @@ h2{
 #mainlogincontainer{
 	padding-top: 5%;
 }
-#bg {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
 
-  min-width: 100%;
-  min-height: 100%;
-  filter: blur(13px);
-   margin: -5px -20px -20px -20px;
-}
 footer{
     margin-top:60px;
 }
@@ -125,45 +116,8 @@ li {
 	margin: center;
 	text-align: center;
 }
-#user{
-	width: 6.5%;
-}
- #bell{
- 	width:6.5%;
- }
- 
- #success-alert{
-  position:fixed; 
-    bottom: 0px; 
-    right: 0px; 
-    width: 30%;
-    z-index:9999; 
- }
 
-#homebar{
-	     display: flex;
-    align-items: center;
-}
-body{
-	background-color: white;
-}
-.panel-info{
-	border-color: #286090;
-	max-width: 640px;
-	min-height:500px;
-	margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-}
-.panel-info>.panel-heading {
-	background-color: #286090;
-	border-color: #286090;
-}
 
-.panel-title{
-	background-color: #286090;
-	color: white;
-}
 textarea {
     resize: none;
 }
@@ -194,9 +148,10 @@ textarea {
   text-align: center;
 
 }
-#sign{
-	width: 100%;
+#newtaskcontainer{
+	max-height: 590px;
 }
+
 body{
 	background-color: #f7f7f7;
 }

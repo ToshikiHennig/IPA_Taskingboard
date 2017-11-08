@@ -1,10 +1,12 @@
 package taskingBoard.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import taskingBoard.Exception.EmptyDataException;
 import taskingBoard.Exception.NoTaskFoundException;
 import taskingBoard.Exception.NoUserFoundException;
 import taskingBoard.model.Task;
@@ -87,7 +90,8 @@ public class RestController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/newTask")
-	public String newTask(Task newtask, final HttpServletRequest request, Principal principal) {
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<HttpStatus> newTask(Task newtask, final HttpServletRequest request, Principal principal) {
 		final User user = userRepository.findByUsername(principal.getName());
 		if (user == null) {
 			throw new NoUserFoundException();
@@ -101,9 +105,10 @@ public class RestController {
 			task.setDescription(newtask.getDescription());
 			task.setCreator(user);
 			taskRepository.save(task);
-			return "/newTask";
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			return "redirect:/newTask?error";
+			System.out.println("Da ist was schief gelaufen");
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
 
 	}
