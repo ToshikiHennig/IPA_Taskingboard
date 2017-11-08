@@ -9,15 +9,21 @@ $(document).ready(function () {
             
             },
             update: function(event, ui){
-            	 if (this === ui.item.parent()[0]) {
-            		 
-            		 if($(ui.item).children("div").attr("taskparent") == ui.item.parent().attr("id")){
+            	 if (this === ui.item.parent()[0]) {          		 
+            		if($(ui.item).children("div").attr("taskparent") == ui.item.parent().attr("id")){
             			 console.log($(ui.item).children("div").attr("id")); 
             			 console.log(ui.item.parent().attr("id")); 
-            		 }else{
-            			 (ui.item).children("div").attr("taskparent", ui.item.parent().attr("id"));
-            			 console.log(ui.item.parent().attr("id")); 
-            			 console.log($(ui.item).children("div").attr("taskparent")); 
+            			 $.notify("ACHTUNG: Die Reihenfolge wird nach Neuladen der Seite wieder zurück gesetzt", "warn");
+            		 }else{	
+            			 $.post( "/updateTask", {id: $(ui.item).children("div").attr("id")}, function(result, status){
+            			    }).done(function() {
+            			    	 (ui.item).children("div").attr("taskparent", ui.item.parent().attr("id"));
+            		      	     $.notify("Task wurde aktualisiert", "success");		
+            			    }).fail(function() {
+            			    	$.notify("Oops, da ist was schief gelaufen", "error");
+            			    	$("#errorBox").css("display", "block");
+            			    	 $( "#openTasks, #closedTasks" ).sortable("disable");
+            			    });
             		 }
             		 
             	    }
@@ -28,6 +34,10 @@ $(document).ready(function () {
 
 
 });
+
+function reloadPage(){
+	location.reload();
+}
 
 function addElements() {
 	$.getJSON("/getalltasks", function(result){

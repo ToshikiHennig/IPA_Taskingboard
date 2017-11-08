@@ -23,6 +23,6 @@ $(function() {
       	     $.notify("Task wurde erstellt", "success");		
 	    }).fail(function() {
 	    	$.notify("Da ist was schief gelaufen", "error");
-	    });;
+	    });
     });
 });

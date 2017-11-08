@@ -14,12 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import taskingBoard.Exception.EmptyDataException;
+import taskingBoard.Exception.LoginSessionException;
 import taskingBoard.Exception.NoTaskFoundException;
 import taskingBoard.Exception.NoUserFoundException;
 import taskingBoard.model.Task;
@@ -92,46 +95,60 @@ public class RestController {
 	@RequestMapping(method = RequestMethod.POST, value = "/newTask")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<HttpStatus> newTask(Task newtask, final HttpServletRequest request, Principal principal) {
-		final User user = userRepository.findByUsername(principal.getName());
-		if (user == null) {
-			throw new NoUserFoundException();
-		}
-		if (!stringIsEmpty(newtask.getTitle()) && !stringIsEmpty(newtask.getDescription())
-				&& newtask.getAssignee() != null) {
-			final Task task = new Task();
-			task.setAssignee(newtask.getAssignee());
-			task.setTitle(newtask.getTitle());
-			task.setDone(false);
-			task.setDescription(newtask.getDescription());
-			task.setCreator(user);
-			taskRepository.save(task);
-			return new ResponseEntity<>(HttpStatus.OK);
+		if (request.isRequestedSessionIdValid()) {
+			final User user = userRepository.findByUsername(principal.getName());
+			if (user == null) {
+				throw new NoUserFoundException();
+			}
+			if (!stringIsEmpty(newtask.getTitle()) && !stringIsEmpty(newtask.getDescription())
+					&& newtask.getAssignee() != null) {
+				final Task task = new Task();
+				task.setAssignee(newtask.getAssignee());
+				task.setTitle(newtask.getTitle());
+				task.setDone(false);
+				task.setDescription(newtask.getDescription());
+				task.setCreator(user);
+				taskRepository.save(task);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				System.out.println("Da ist was schief gelaufen");
+				return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+			}
 		} else {
-			System.out.println("Da ist was schief gelaufen");
-			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+			throw new LoginSessionException();
 		}
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/updateTask")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<HttpStatus> updateTask(Task newtask) {
-		final Task task = taskRepository.findOne(newtask.getId());
-		if (task == null) {
-			System.out.println("keinen Task gefunden");
-			throw new NoTaskFoundException(newtask.getId());
-		} else {
-			System.out.println(!task.isDone());
-			task.setDone(!task.isDone());
-			taskRepository.save(task);
-			return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<HttpStatus> updateTask(Task newtask, final HttpServletRequest request) {
+		if (request.isRequestedSessionIdValid()) {
+			final Task task = taskRepository.findOne(newtask.getId());
+			if (task == null) {
+				System.out.println("keinen Task gefunden");
+				throw new NoTaskFoundException(newtask.getId());
+			} else {
+				task.setDone(!task.isDone());
+				taskRepository.save(task);
+				return new ResponseEntity<>(HttpStatus.OK);
 
+			}
+		} else {
+			throw new LoginSessionException();
 		}
+
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No User Found")
 	@ExceptionHandler(NoUserFoundException.class)
 	public void handleUserNotFound(NoUserFoundException e) {
+	}
+
+	@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Login Session not valid")
+	@ExceptionHandler(LoginSessionException.class)
+	public void handleForbiddenStatus(LoginSessionException e) {
+
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No Task Found")

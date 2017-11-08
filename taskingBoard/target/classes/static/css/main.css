@@ -44,10 +44,19 @@ h2{
 	border-right: 1px solid #d0d0d0;
 }
 .task{
-	border: 1px solid #d0d0d0;
+	margin-right: 3px;
 	height: 12%;
-	margin-top: 3px;
+	margin-top: 9px;
 	background-color: white;
+	box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+
+}
+.task:hover{
+	cursor:move;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25), 0 10px 10px 0 rgba(0, 0, 0, 0.25);
+	-webkit-transform: translateX(3px);
+    transform: translateX(3px);
+    transition: box-shadow 0.1s ease-in-out;
 }
 .task-title{
 	font-size: 140%;
@@ -62,6 +71,17 @@ h2{
 	height: 8%;
 	font-size: 150%;
 	text-align: center;
+}
+#errorBox{
+	display: none;
+}
+.link { 
+	background:none;
+	border:none; 
+	text-decoration:underline;
+}
+.link:focus {
+	outline:0;
 }
 #mainbar{
 	background-color: #f9f9f9;
