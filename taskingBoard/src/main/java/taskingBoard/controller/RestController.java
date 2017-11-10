@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import taskingBoard.Exception.EmptyDataException;
-import taskingBoard.Exception.LoginSessionException;
 import taskingBoard.Exception.NoTaskFoundException;
 import taskingBoard.Exception.NoUserFoundException;
 import taskingBoard.model.Task;
@@ -31,6 +31,7 @@ import taskingBoard.repository.TaskRepository;
 import taskingBoard.repository.UserRepository;
 
 @Controller
+@PreAuthorize("isAuthenticated()")
 public class RestController {
 	@Autowired
 	UserRepository userRepository;
@@ -95,47 +96,39 @@ public class RestController {
 	@RequestMapping(method = RequestMethod.POST, value = "/newTask")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<HttpStatus> newTask(Task newtask, final HttpServletRequest request, Principal principal) {
-		if (request.isRequestedSessionIdValid()) {
-			final User user = userRepository.findByUsername(principal.getName());
-			if (user == null) {
-				throw new NoUserFoundException();
-			}
-			if (!stringIsEmpty(newtask.getTitle()) && !stringIsEmpty(newtask.getDescription())
-					&& newtask.getAssignee() != null) {
-				final Task task = new Task();
-				task.setAssignee(newtask.getAssignee());
-				task.setTitle(newtask.getTitle());
-				task.setDone(false);
-				task.setDescription(newtask.getDescription());
-				task.setCreator(user);
-				taskRepository.save(task);
-				return new ResponseEntity<>(HttpStatus.OK);
-			} else {
-				System.out.println("Da ist was schief gelaufen");
-				return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-			}
+		final User user = userRepository.findByUsername(principal.getName());
+		if (user == null) {
+			throw new NoUserFoundException();
+		}
+		if (!stringIsEmpty(newtask.getTitle()) && !stringIsEmpty(newtask.getDescription())
+				&& newtask.getAssignee() != null) {
+			final Task task = new Task();
+			task.setAssignee(newtask.getAssignee());
+			task.setTitle(newtask.getTitle());
+			task.setDone(false);
+			task.setDescription(newtask.getDescription());
+			task.setCreator(user);
+			taskRepository.save(task);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			throw new LoginSessionException();
+			System.out.println("Da ist was schief gelaufen");
+			throw new EmptyDataException();
 		}
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/updateTask")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<HttpStatus> updateTask(Task newtask, final HttpServletRequest request) {
-		if (request.isRequestedSessionIdValid()) {
-			final Task task = taskRepository.findOne(newtask.getId());
-			if (task == null) {
-				System.out.println("keinen Task gefunden");
-				throw new NoTaskFoundException(newtask.getId());
-			} else {
-				task.setDone(!task.isDone());
-				taskRepository.save(task);
-				return new ResponseEntity<>(HttpStatus.OK);
-
-			}
+	public ResponseEntity<HttpStatus> updateTask(Task newtask) {
+		final Task task = taskRepository.findOne(newtask.getId());
+		if (task == null) {
+			System.out.println("keinen Task gefunden");
+			throw new NoTaskFoundException(newtask.getId());
 		} else {
-			throw new LoginSessionException();
+			task.setDone(!task.isDone());
+			taskRepository.save(task);
+			return new ResponseEntity<>(HttpStatus.OK);
+
 		}
 
 	}
@@ -145,19 +138,19 @@ public class RestController {
 	public void handleUserNotFound(NoUserFoundException e) {
 	}
 
-	@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Login Session not valid")
-	@ExceptionHandler(LoginSessionException.class)
-	public void handleForbiddenStatus(LoginSessionException e) {
-
-	}
-
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No Task Found")
 	@ExceptionHandler(NoTaskFoundException.class)
 	public void handleTaskNotFound(NoTaskFoundException e) {
 	}
 
+	@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE, reason = "Not all required fields are filled")
+	@ExceptionHandler(EmptyDataException.class)
+	public void handleEmptyData(EmptyDataException e) {
+	}
+
+	// Übernommen aus einer Antwort von Stackoverflow:
+	// https://stackoverflow.com/questions/3598770/check-whether-a-string-is-not-null-and-not-empty
 	public static boolean stringIsEmpty(final String s) {
-		// Null-safe, short-circuit evaluation.
 		return s == null || s.trim().isEmpty();
 	}
 

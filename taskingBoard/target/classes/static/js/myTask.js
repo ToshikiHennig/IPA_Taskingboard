@@ -16,6 +16,10 @@ $(document).ready(function () {
             			 $.notify("ACHTUNG: Die Reihenfolge wird nach Neuladen der Seite wieder zurück gesetzt", "warn");
             		 }else{	
             			 $.post( "/updateTask", {id: $(ui.item).children("div").attr("id")}, function(result, status){
+            			    }).success(function(data, textStatus, request) {
+            			    	if(data != ""){
+            			    		reloadPage();
+            			    	}
             			    }).done(function() {
             			    	 (ui.item).children("div").attr("taskparent", ui.item.parent().attr("id"));
             		      	     $.notify("Task wurde aktualisiert", "success");		

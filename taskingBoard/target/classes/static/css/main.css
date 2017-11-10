@@ -7,7 +7,7 @@ h2{
 }
 ::-webkit-scrollbar
 {
-  width: 6px;  /* for vertical scrollbars */
+  width: 3px;
   border-radius: 6px;
 }
 
@@ -21,13 +21,15 @@ h2{
   background: rgba(208,208,208,1);
 }
 .app-layout{
-	display: grid; /* 1 */
-  grid-template-columns: 1fr 1fr; /* 2 */
-  grid-template-rows: 70vh; /* 3 */
+	display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 70vh;
 }
 .taskfield{
+	position: static;
 	height: 92%;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 .app-layout{
 	height: 70%;
@@ -45,7 +47,7 @@ h2{
 }
 .task{
 	margin-right: 3px;
-	height: 12%;
+	min-height: 12%;
 	margin-top: 9px;
 	background-color: white;
 	box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
@@ -65,12 +67,15 @@ h2{
 }
 .description{
 	margin-left: 3px;
+	overflow-wrap: break-word;
+	max-width: 507px;
 }
 .title{
 	border-bottom: 1px solid #d0d0d0;
 	height: 8%;
 	font-size: 150%;
 	text-align: center;
+	overflow-wrap: break-word;
 }
 #errorBox{
 	display: none;
